@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexical Definition Challenge</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            padding: 20px; 
+            background-color: #f0f8ff; 
+        }
+        h2 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 15px; 
+            padding: 10px; 
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+        }
+        .result {
+            font-weight: bold; 
+            margin-top: 10px;
+            padding: 10px;
+            text-align: center;
+            background-color: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            color: #155724;
+        }
+        .hidden { display: none; }
+        .summary {
+            margin-top: 20px; 
+            padding: 15px; 
+            border: 1px solid #007bff; 
+            background-color: #cce5ff;
+            border-radius: 8px;
+            color: #004085;
+        }
+        select {
+            padding: 5px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #17a2b8;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Lexical Definition Challenge 🎉</h2>
+    <p style="text-align:center; font-weight: bold;">Match each definition to the correct type! Choose from:</p>
+    <ul style="list-style-type: none; padding: 0; text-align: center;">
+        <li><strong style="color:#ff5722;">A)</strong> Definition by ostension (pointing to an example)</li>
+        <li><strong style="color:#ff9800;">B)</strong> Definition by synonymy (using a synonym)</li>
+        <li><strong style="color:#4caf50;">C)</strong> Definition by context or typical exemplar (giving an example in a typical context)</li>
+        <li><strong style="color:#03a9f4;">D)</strong> Definition by genus and differentia (placing the term in a category and specifying distinguishing features)</li>
+    </ul>
+    
+    <form id="quizForm">
+        <div id="questions-container"></div>
+        <button type="button" onclick="checkAnswers()">Submit Answers</button>
+    </form>
+    
+    <div id="results" class="result hidden"></div>
+    <div id="summary" class="summary hidden"></div>
+    <button id="restart" class="hidden" onclick="restartQuiz()">Restart</button>
+    
+    <script>
+        const questions = [
+            { text: "(Points to a blue pen) 'This is blue.'", answer: "A", explanation: "Ostension: The definition is given by directly pointing at an example." },
+            { text: "'Fast: quick, rapid.'", answer: "B", explanation: "Synonymy: The word 'fast' is defined using synonyms." },
+            { text: "'On a hot day, I poured some into my glass, and the cold, refreshing liquid helped me cool down.'", answer: "C", explanation: "Context: The meaning of the word is inferred from its use in a typical situation." },
+            { text: "'Triangle: A shape with three sides.'", answer: "D", explanation: "Genus and Differentia: 'Triangle' is placed in a category (shape) and described by its unique features." },
+            { text: "(Shows a picture of a dog) 'This is a dog.'", answer: "A", explanation: "Ostension: Definition is made by showing an example." },
+            { text: "'Happy: joyful, cheerful, content.'", answer: "B", explanation: "Synonymy: 'Happy' is defined using related words." },
+            { text: "'He took an umbrella because it was raining heavily outside.'", answer: "C", explanation: "Context: The meaning of 'umbrella' is clear from how it is used in a scenario." },
+            { text: "'Elephant: A large, gray mammal with a trunk and tusks.'", answer: "D", explanation: "Genus and Differentia: 'Elephant' is categorized as a mammal and further described by its features." },
+            { text: "(Points to a tall building) 'This is a skyscraper.'", answer: "A", explanation: "Ostension: The definition is given by showing a real-world object." },
+            { text: "'Car: A vehicle with four wheels that is used for transportation.'", answer: "D", explanation: "Genus and Differentia: 'Car' is a type of vehicle with distinguishing features." }
+        ];
+        
+        function generateQuestions() {
+            const container = document.getElementById("questions-container");
+            questions.forEach((q, index) => {
+                const div = document.createElement("div");
+                div.classList.add("question");
+                div.innerHTML = `<p><strong>Question ${index + 1}:</strong> ${q.text}</p>
+                <select name="q${index + 1}">
+                    <option value="">-- Select an answer --</option>
+                    <option value="A">A) Definition by ostension</option>
+                    <option value="B">B) Definition by synonymy</option>
+                    <option value="C">C) Definition by context</option>
+                    <option value="D">D) Definition by genus and differentia</option>
+                </select>`;
+                container.appendChild(div);
+            });
+        }
+        
+        function checkAnswers() {
+            let score = 0;
+            let total = questions.length;
+            let summaryText = "<h3>Summary of Correct Answers:</h3><ul>";
+            
+            questions.forEach((q, index) => {
+                let selected = document.querySelector(`select[name="q${index + 1}"]`).value;
+                if (selected === q.answer) {
+                    score++;
+                }
+                summaryText += `<li><strong>Question ${index + 1}:</strong> ${q.explanation}</li>`;
+            });
+            summaryText += "</ul>";
+            
+            document.getElementById("results").innerText = `You scored ${score} out of ${total}!`;
+            document.getElementById("results").classList.remove("hidden");
+            document.getElementById("summary").innerHTML = summaryText;
+            document.getElementById("summary").classList.remove("hidden");
+            document.getElementById("restart").classList.remove("hidden");
+        }
+        
+        function restartQuiz() {
+            location.reload();
+        }
+        
+        generateQuestions();
+    </script>
+</body>
+</html>
